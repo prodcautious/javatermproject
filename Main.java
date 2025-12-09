@@ -39,6 +39,7 @@ public class Main {
             int command = scanner.nextInt();
             scanner.nextLine();
 
+            // Sort Alphabetically
             if(command == 1) {
                 System.out.println("\nPlease select a category:");
                 System.out.println(getCategories(inventory));
@@ -47,6 +48,8 @@ public class Main {
                 System.out.println("\n" + category + " listed alphabetically:");
                 System.out.println(sortItemsAlphabetically(inventory, category));
             }
+
+            // Sort by price
             else if(command == 2) {
                 System.out.println("\nPlease select a category:");
                 System.out.println(getCategories(inventory));
@@ -55,6 +58,8 @@ public class Main {
                 System.out.println("\n" + category + " listed by price:");
                 System.out.println(sortItemsByPrice(inventory, category));
             }
+
+            // Add new item
             else if(command == 3) {
                 System.out.print("\nEnter item name: ");
                 String name = scanner.nextLine();
@@ -68,12 +73,16 @@ public class Main {
                 addItemToHashMap(inventory, name, category, price, stock);
                 System.out.println();
             }
+
+            // Remove item
             else if(command == 4) {
                 System.out.print("\nEnter item name: ");
                 String name = scanner.nextLine();
-                System.out.print("Enter item category: ");
+                System.out.print("\nEnter item category: ");
                 String category = scanner.nextLine();
-                removeItemFromHashMap(inventory, name, category);
+                System.out.print("\nEnter item name: ");
+                int amount = scanner.nextInt();
+                removeItemFromHashMap(inventory, name, category, amount);
                 System.out.println();
             }
             else if(command == 5) {
@@ -104,14 +113,22 @@ public class Main {
         }
     }
 
-    public static void removeItemFromHashMap(HashMap<Item, Integer> map, String name, String category) {
+    public static void removeItemFromHashMap(HashMap<Item, Integer> map, String name, String category, int amountToRemove) {
         Item searchItem = new Item(name, category, 0, 0);
 
         // If item exists
         if (map.containsKey(searchItem)) {
             Item itemToRemove = getItemFromMap(map, searchItem);
-            map.remove(itemToRemove);
-            System.out.println("Removed item: " + name + " from inventory");
+            int originalAmount = itemToRemove.getStock();
+            itemToRemove.setStock(originalAmount - amountToRemove);
+            System.out.println("Removed " + amountToRemove + " stock from item: " + name + ".");
+            if(itemToRemove.getStock() <= 0)
+            {
+                map.remove(itemToRemove);
+                System.out.println("Removed item: " + name + " from inventory. Stock was empty.");
+                // Set up order more functionality
+                System.out.println("Would you like to order more?");
+            }
         }
         // Item doesn't exist
         else {
