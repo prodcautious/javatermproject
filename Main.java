@@ -20,7 +20,7 @@ public class Main {
         addItemToHashMap(inventory, "Croissant", "Bakery", 1.79, 18);
         addItemToHashMap(inventory, "Muffin", "Bakery", 1.49, 22);
         addItemToHashMap(inventory, "Donut", "Bakery", 0.99, 30);
-
+        printInventory(inventory);  
         Scanner scanner = new Scanner(System.in);
         System.out.println("Hello User! Welcome to Inventory Manager\n");
 
@@ -85,9 +85,7 @@ public class Main {
             }
 
         }
-
-        System.out.println("Inventory" + inventory.toString());      
-        scanner.close();
+  
     }
 
     public static void addItemToHashMap(HashMap<Item, Integer> map, String name, String category, double price, int stock) {
