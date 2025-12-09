@@ -12,6 +12,7 @@ public class Item {
         this.stock = stock;
     }
 
+    // Getters
     public String getName()
     {
         return name;
@@ -30,6 +31,27 @@ public class Item {
     public int getStock()
     {
         return stock;
+    }
+
+    // Setters
+    public void setName(String newName)
+    {
+        name = newName;
+    }
+
+    public void setCategory(String newCategory)
+    {
+        category = newCategory;
+    }
+
+    public void setPrice(int newAmount)
+    {
+        price = newAmount;
+    }
+
+    public void setStock(int newAmount)
+    {
+        stock = newAmount;
     }
 
     @Override
