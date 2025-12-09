@@ -83,8 +83,10 @@ public class Main {
             else {
                 System.out.println("\nInvalid command. Please try again.\n");
             }
+
         }
-        
+
+        System.out.println("Inventory" + inventory.toString());      
         scanner.close();
     }
 
@@ -194,5 +196,26 @@ public class Main {
         }
         
         return result;
+    }
+    public static void printInventory(HashMap<Item, Integer> inventory) {
+        System.out.println("\n=========== INVENTORY ===========");
+    
+        if (inventory.isEmpty()) {
+            System.out.println("Inventory is empty.");
+            return;
+        }
+    
+        for (Item item : inventory.keySet()) {
+            int qty = inventory.get(item);
+            System.out.printf(
+                "%-20s | %-10s | $%-6.2f | qty: %d%n",
+                item.getName(),
+                item.getCategory(),
+                item.getPrice(),
+                qty
+            );
+        }
+    
+        System.out.println("=================================\n");
     }
 }
