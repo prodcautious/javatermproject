@@ -233,17 +233,16 @@ public class Main {
     }
 
     private static void handleEditItem(Scanner scanner, HashMap<Item, Integer> inventory) {
+        // Enter name and make sure it is not an empty string
         System.out.print("\nEnter item name to edit: ");
         String name = scanner.nextLine();
-        
         if (name.trim().isEmpty()) {
             System.out.println("Item name cannot be empty.\n");
             return;
         }
-        
+        // Enter category and make sure it is not an empty string        
         System.out.print("Enter item category: ");
         String category = scanner.nextLine();
-        
         if (category.trim().isEmpty()) {
             System.out.println("Category cannot be empty.\n");
             return;
@@ -252,6 +251,7 @@ public class Main {
         Item searchItem = new Item(name, category, 0, 0);
         Item existingItem = getItemFromMap(inventory, searchItem);
 
+        // Item doesn't exist
         if (existingItem == null) {
             System.out.println("Item not found in inventory\n");
             return;
@@ -329,12 +329,16 @@ public class Main {
 
     // Inventory Operations
     public static void addItemToHashMap(HashMap<Item, Integer> map, String name, String category, double price, int stock) {
+        // Creates a new item out of passed attributes
         Item newItem = new Item(name, category, price, stock);
 
+        // If the item already exists in the map, just add the stock.
         if (map.containsKey(newItem)) {
             Item existingItem = getItemFromMap(map, newItem);
             map.put(existingItem, map.get(existingItem) + stock);
             System.out.println("Added stock to existing item: " + name + " | +" + stock + " units");
+
+        // Add new item to hashmap
         } else {
             map.put(newItem, stock);
             System.out.println("Added new item: " + name + " | $" + price + " | " + stock + " units");
@@ -342,8 +346,10 @@ public class Main {
     }
 
     public static void removeItemFromHashMap(HashMap<Item, Integer> map, Queue<Item> restockQueue, String name, String category, int amount) {
+        // Item to remove
         Item searchItem = new Item(name, category, 0, 0);
 
+        // It item exists
         if (map.containsKey(searchItem)) {
             Item item = getItemFromMap(map, searchItem);
             int currentStock = map.get(item);
@@ -353,25 +359,31 @@ public class Main {
                 newQty = 0;
             }
             
+            // If there is still existing stock
             map.put(item, newQty);
             System.out.println("Removed " + amount + " units from " + name + ". New stock: " + newQty);
 
+            // If the item is out of stock, add it to the restockQueue
             if (newQty <= 0) {
                 if (!restockQueue.contains(item)) {
                     restockQueue.add(item);
                     System.out.println(name + " is out of stock and added to restock queue");
                 }
             }
+
+        // Item not found
         } else {
             System.out.println("Item not found");
         }
     }
 
     public static void printRestockQueue(Queue<Item> queue) {
+        // Empty check
         if (queue.isEmpty()) {
             System.out.println("\nRestock queue is empty\n");
             return;
         }
+        // Iterates through items in the restock queue
         System.out.println("\nRestock Queue:");
         for (Item item : queue) {
             System.out.println("- " + item.getName());
@@ -380,21 +392,27 @@ public class Main {
     }
 
     public static void restockNextItem(Queue<Item> queue, HashMap<Item, Integer> inventory) {
+        // Empty check
         if (queue.isEmpty()) {
             System.out.println("\nNothing to restock\n");
             return;
         }
+        // .poll() takes and removes the head of the queue
         Item item = queue.poll();
+
+        // Add 10 stock to item (Could probably restock with a certain amount at some point)
         inventory.put(item, 10);
         System.out.println("\nRestocked " + item.getName() + " with 10 units\n");
     }
 
     private static Item getItemFromMap(HashMap<Item, Integer> map, Item searchItem) {
+        // Item exists
         for (Item item : map.keySet()) {
             if (item.equals(searchItem)) {
                 return item;
             }
         }
+        // Item does not exist
         return null;
     }
 
