@@ -1,13 +1,16 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
 public class Main {
     // Main Method
     public static void main(String[] args) {
+<<<<<<< HEAD
         HashMap<Item, Integer> inventory = new HashMap<>();
         initializeInventory(inventory);
 
@@ -20,6 +23,12 @@ public class Main {
 
     // Initialization
     private static void initializeInventory(HashMap<Item, Integer> inventory) {
+=======
+
+        HashMap<Item, Integer> inventory = new HashMap<>();
+        Queue<Item> restockQueue = new LinkedList<>();
+
+>>>>>>> 2d1f6c1882346e0a3be13bb40a7780f398c4722e
         addItemToHashMap(inventory, "Apple", "Fruit", 0.69, 10);
         addItemToHashMap(inventory, "Banana", "Fruit", 0.49, 15);
         addItemToHashMap(inventory, "Strawberries", "Fruit", 2.99, 8);
@@ -30,6 +39,78 @@ public class Main {
         addItemToHashMap(inventory, "Croissant", "Bakery", 1.79, 18);
         addItemToHashMap(inventory, "Muffin", "Bakery", 1.49, 22);
         addItemToHashMap(inventory, "Donut", "Bakery", 0.99, 30);
+<<<<<<< HEAD
+=======
+
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\nAvailable Commands:");
+            System.out.println("[1] List items alphabetically");
+            System.out.println("[2] List items by price");
+            System.out.println("[3] Add item");
+            System.out.println("[4] Remove item amount");
+            System.out.println("[5] View restock queue");
+            System.out.println("[6] Restock next item");
+            System.out.println("[7] Quit");
+            System.out.print("Choice: ");
+
+            int command = scanner.nextInt();
+            scanner.nextLine();
+
+            if (command == 1) {
+                System.out.println(getCategories(inventory));
+                System.out.print("Category: ");
+                String category = scanner.nextLine();
+                System.out.println(sortItemsAlphabetically(inventory, category));
+            }
+
+            else if (command == 2) {
+                System.out.println(getCategories(inventory));
+                System.out.print("Category: ");
+                String category = scanner.nextLine();
+                System.out.println(sortItemsByPrice(inventory, category));
+            }
+
+            else if (command == 3) {
+                System.out.print("Name: ");
+                String name = scanner.nextLine();
+                System.out.print("Category: ");
+                String category = scanner.nextLine();
+                System.out.print("Price: ");
+                double price = scanner.nextDouble();
+                System.out.print("Stock: ");
+                int stock = scanner.nextInt();
+                scanner.nextLine();
+                addItemToHashMap(inventory, name, category, price, stock);
+            }
+
+            else if (command == 4) {
+                System.out.print("Name: ");
+                String name = scanner.nextLine();
+                System.out.print("Category: ");
+                String category = scanner.nextLine();
+                System.out.print("Amount to remove: ");
+                int amount = scanner.nextInt();
+                scanner.nextLine();
+                removeItemFromHashMap(inventory, restockQueue, name, category, amount);
+            }
+
+            else if (command == 5) {
+                printRestockQueue(restockQueue);
+            }
+
+            else if (command == 6) {
+                restockNextItem(restockQueue, inventory);
+            }
+
+            else if (command == 7) {
+                running = false;
+            }
+        }
+        scanner.close();
+>>>>>>> 2d1f6c1882346e0a3be13bb40a7780f398c4722e
     }
 
     // Main Loop
@@ -301,16 +382,58 @@ public class Main {
         }
     }
 
-    public static void removeItemFromHashMap(HashMap<Item, Integer> map, String name, String category) {
+    public static void removeItemFromHashMap(HashMap<Item, Integer> map,
+                                             Queue<Item> restockQueue,
+                                             String name,
+                                             String category,
+                                             int amount) {
         Item searchItem = new Item(name, category, 0, 0);
 
         if (map.containsKey(searchItem)) {
+<<<<<<< HEAD
             Item itemToRemove = getItemFromMap(map, searchItem);
             map.remove(itemToRemove);
             System.out.println("Removed item: " + name + " from inventory");
         } else {
             System.out.println("Item not found in inventory");
+=======
+            Item item = getItemFromMap(map, searchItem);
+            int newQty = map.get(item) - amount;
+            map.put(item, newQty);
+
+            if (newQty <= 0) {
+                map.put(item, 0);
+                if (!restockQueue.contains(item)) {
+                    restockQueue.add(item);
+                }
+                System.out.println(name + " is out of stock and added to restock queue");
+            }
+        } else {
+            System.out.println("Item not found");
         }
+    }
+
+    public static void printRestockQueue(Queue<Item> queue) {
+        if (queue.isEmpty()) {
+            System.out.println("Restock queue is empty");
+            return;
+>>>>>>> 2d1f6c1882346e0a3be13bb40a7780f398c4722e
+        }
+        System.out.println("Restock Queue:");
+        for (Item item : queue) {
+            System.out.println("- " + item.getName());
+        }
+    }
+
+    public static void restockNextItem(Queue<Item> queue,
+                                       HashMap<Item, Integer> inventory) {
+        if (queue.isEmpty()) {
+            System.out.println("Nothing to restock");
+            return;
+        }
+        Item item = queue.poll();
+        inventory.put(item, 10);
+        System.out.println("Restocked " + item.getName() + " with 10 units");
     }
 
     private static Item getItemFromMap(HashMap<Item, Integer> map, Item searchItem) {
@@ -383,5 +506,26 @@ public class Main {
                 item.getName(), item.getPrice(), map.get(item)));
         }
         return result.toString();
+    }
+    public static void printInventory(HashMap<Item, Integer> inventory) {
+        System.out.println("\n=========== INVENTORY ===========");
+    
+        if (inventory.isEmpty()) {
+            System.out.println("Inventory is empty.");
+            return;
+        }
+    
+        for (Item item : inventory.keySet()) {
+            int qty = inventory.get(item);
+            System.out.printf(
+                "%-20s | %-10s | $%-6.2f | qty: %d%n",
+                item.getName(),
+                item.getCategory(),
+                item.getPrice(),
+                qty
+            );
+        }
+    
+        System.out.println("=================================\n");
     }
 }
