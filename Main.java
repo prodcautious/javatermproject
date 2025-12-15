@@ -10,13 +10,18 @@ import java.util.InputMismatchException;
 public class Main {
     // Main Method
     public static void main(String[] args) {
+        // Hashmap to store Item data
         HashMap<Item, Integer> inventory = new HashMap<>();
+
+        // Queue of Items that are to be restocked
         Queue<Item> restockQueue = new LinkedList<>();
         initializeInventory(inventory);
 
+        // Input scanner
         Scanner scanner = new Scanner(System.in);
         System.out.println("Hello User! Welcome to Inventory Manager\n");
 
+        // Main loop - uses processcommand to determine which method to run based on user's input
         runInventoryManager(scanner, inventory, restockQueue);
         scanner.close();
     }
@@ -105,77 +110,85 @@ public class Main {
 
     // Command-Related Methods
     private static void handleListAlphabetically(Scanner scanner, HashMap<Item, Integer> inventory) {
+        // Ask user for category
         System.out.println("\nPlease select a category:");
         System.out.println(getCategories(inventory));
         System.out.print("Enter Category: ");
         String category = scanner.nextLine();
         
+        // Check if category exists
         if (category.trim().isEmpty()) {
             System.out.println("Category cannot be empty.\n");
             return;
         }
         
+        // Print items sorted alphabetically
         System.out.println("\n" + category + " listed alphabetically:");
         System.out.println(sortItemsAlphabetically(inventory, category));
     }
 
     private static void handleListByPrice(Scanner scanner, HashMap<Item, Integer> inventory) {
+        // Ask user for category
         System.out.println("\nPlease select a category:");
         System.out.println(getCategories(inventory));
         System.out.print("Enter Category: ");
         String category = scanner.nextLine();
         
+        // Check if category exists        
         if (category.trim().isEmpty()) {
             System.out.println("Category cannot be empty.\n");
             return;
         }
-        
+
+        // Print items sorted by price  
         System.out.println("\n" + category + " listed by price:");
         System.out.println(sortItemsByPrice(inventory, category));
     }
 
     private static void handleAddItem(Scanner scanner, HashMap<Item, Integer> inventory) {
+        // Ask for name input + check if it exists
         System.out.print("\nEnter item name: ");
         String name = scanner.nextLine();
-        
         if (name.trim().isEmpty()) {
             System.out.println("Item name cannot be empty.\n");
             return;
         }
         
+        // Ask for category input + check if it exists
         System.out.print("Enter item category: ");
         String category = scanner.nextLine();
-        
         if (category.trim().isEmpty()) {
             System.out.println("Category cannot be empty.\n");
             return;
         }
-        
+
         double price = -1;
         int stock = -1;
         
         try {
+            // Enter item price and make sure it is positive
             System.out.print("Enter item price: ");
             price = scanner.nextDouble();
-            
             if (price < 0) {
                 System.out.println("Price cannot be negative.\n");
                 scanner.nextLine();
                 return;
             }
-            
+
+            // Enter item quantity and make sure it is positive      
             System.out.print("Enter stock quantity: ");
-            stock = scanner.nextInt();
-            
+            stock = scanner.nextInt();         
             if (stock < 0) {
                 System.out.println("Stock cannot be negative.\n");
                 scanner.nextLine();
                 return;
             }
             
+            // Add item to Hashmap
             scanner.nextLine();
             addItemToHashMap(inventory, name, category, price, stock);
             System.out.println();
+
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Price and stock must be numbers.\n");
             scanner.nextLine();
@@ -183,34 +196,36 @@ public class Main {
     }
 
     private static void handleRemoveItem(Scanner scanner, HashMap<Item, Integer> inventory, Queue<Item> restockQueue) {
+        // Enter item name and make sure it's not empty
         System.out.print("\nEnter item name: ");
         String name = scanner.nextLine();
-        
         if (name.trim().isEmpty()) {
             System.out.println("Item name cannot be empty.\n");
             return;
         }
-        
+
+        // Enter item name and make sure it's not empty        
         System.out.print("Enter item category: ");
         String category = scanner.nextLine();
-        
         if (category.trim().isEmpty()) {
             System.out.println("Category cannot be empty.\n");
             return;
         }
         
         try {
+            // Enter price and make sure it's positive
             System.out.print("Enter amount to remove: ");
             int amount = scanner.nextInt();
             scanner.nextLine();
-            
             if (amount < 0) {
                 System.out.println("Amount cannot be negative.\n");
                 return;
             }
             
+            // Remove item from Hashmap
             removeItemFromHashMap(inventory, restockQueue, name, category, amount);
             System.out.println();
+
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Amount must be a number.\n");
             scanner.nextLine();
