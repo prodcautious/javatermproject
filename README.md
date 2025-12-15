@@ -7,4 +7,4 @@ We chose this approach for the project because it demonstrates clear and appropr
 - Nick Phillips
 - Donovan Mooney
 - Benny Lizardo
-- Ethan
+- Ethan Tseng
