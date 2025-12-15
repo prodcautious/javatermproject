@@ -61,4 +61,25 @@ private HashMap<Item, Integer> inventory;
         String result = Main.sortItemsByPrice(inventory, "Fruit");
         assertTrue(result.indexOf("Apple") < result.indexOf("Orange"));
     }
+
+    @Test
+    void testCaseInsensitiveCategory() {
+        Main.addItemToHashMap(inventory, "Apple", "Fruit", 0.69, 10);
+        String result = Main.sortItemsAlphabetically(inventory, "fruit");
+        assertTrue(result.contains("Apple"));
+    }
+
+    @Test
+    void testNonExistentCategory() {
+        Main.addItemToHashMap(inventory, "Apple", "Fruit", 0.69, 10);
+        String result = Main.sortItemsAlphabetically(inventory, "Meat");
+        assertTrue(result.contains("No items found"));
+    }
+
+    @Test
+    void testItemEquality() {
+        Item item1 = new Item("Apple", "Fruit", 0.69, 10);
+        Item item2 = new Item("Apple", "Fruit", 0.99, 5);
+        assertEquals(item1, item2);
+    }
 }
