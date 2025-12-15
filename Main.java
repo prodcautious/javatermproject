@@ -108,7 +108,7 @@ public class Main {
         return true;
     }
 
-    // Command-Related Methods
+    // Handler Methods
     private static void handleListAlphabetically(Scanner scanner, HashMap<Item, Integer> inventory) {
         // Ask user for category
         System.out.println("\nPlease select a category:");
