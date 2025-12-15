@@ -2,6 +2,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class MainTest {
 private HashMap<Item, Integer> inventory;
@@ -24,17 +26,22 @@ private HashMap<Item, Integer> inventory;
         assertEquals(1, inventory.size());
     }
 
-    @Test
     void testRemoveExistingItem() {
+        Queue<Item> restockQueue = new LinkedList<>();
         Main.addItemToHashMap(inventory, "Apple", "Fruit", 0.69, 10);
-        Main.removeItemFromHashMap(inventory, "Apple", "Fruit");
-        assertEquals(0, inventory.size());
+        Main.removeItemFromHashMap(inventory, restockQueue, "Apple", "Fruit", 10);
+        assertEquals(1, inventory.size());
+        Item apple = inventory.keySet().iterator().next();
+        assertEquals(0, inventory.get(apple));
+        assertEquals(1, restockQueue.size());
     }
 
     @Test
     void testRemoveNonExistentItem() {
-        Main.removeItemFromHashMap(inventory, "Banana", "Fruit");
+        Queue<Item> restockQueue = new LinkedList<>();
+        Main.removeItemFromHashMap(inventory, restockQueue, "Banana", "Fruit", 5);
         assertEquals(0, inventory.size());
+        assertTrue(restockQueue.isEmpty());
     }
 
     @Test

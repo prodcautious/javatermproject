@@ -11,14 +11,8 @@ public class Item {
         this.stock = stock;
     }
 
-<<<<<<< HEAD
-    //  Getters
-    public String getName() {
-=======
     // Getters
-    public String getName()
-    {
->>>>>>> 2d1f6c1882346e0a3be13bb40a7780f398c4722e
+    public String getName() {
         return name;
     }
 
@@ -35,7 +29,6 @@ public class Item {
     }
 
     // Setters
-<<<<<<< HEAD
     public void setName(String name) {
         this.name = name;
     }
@@ -53,28 +46,6 @@ public class Item {
     }
 
     // Override Methods
-=======
-    public void setName(String newName)
-    {
-        name = newName;
-    }
-
-    public void setCategory(String newCategory)
-    {
-        category = newCategory;
-    }
-
-    public void setPrice(int newAmount)
-    {
-        price = newAmount;
-    }
-
-    public void setStock(int newAmount)
-    {
-        stock = newAmount;
-    }
-
->>>>>>> 2d1f6c1882346e0a3be13bb40a7780f398c4722e
     @Override
     public boolean equals(Object object) {
         if (this == object) {
