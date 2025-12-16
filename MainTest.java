@@ -25,7 +25,7 @@ private HashMap<Item, Integer> inventory;
         Main.addItemToHashMap(inventory, "Apple", "Fruit", 0.69, 5);
         assertEquals(1, inventory.size());
     }
-
+    @Test
     void testRemoveExistingItem() {
         Queue<Item> restockQueue = new LinkedList<>();
         Main.addItemToHashMap(inventory, "Apple", "Fruit", 0.69, 10);
